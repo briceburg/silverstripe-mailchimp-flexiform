@@ -15,6 +15,8 @@ class FlexiFormMailChimpClient
 
     protected $client = null;
 
+    protected $debug_exceptions = false;
+
     public function __construct($api_key)
     {
         $this->api_key = $api_key;
@@ -44,7 +46,9 @@ class FlexiFormMailChimpClient
                     $method
                 ), $arguments);
         } catch (Exception $e) {
-            // @TODO debug output?
+            if(Director::isDev() && $this->debug_exceptions) {
+                var_dump($e);
+            }
             $result = false;
         }
 
