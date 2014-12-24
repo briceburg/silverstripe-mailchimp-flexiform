@@ -133,7 +133,9 @@ class FlexiFormMailChimpHandler extends FlexiFormBasicHandler
 
                     $options = array();
                     foreach ($group['groups'] as $option) {
-                        $options[$option['id']] = $option['name'];
+                        // mailchimp subscribe API uses names vs. IDs...
+                        //$options[$option['id']] = $option['name'];
+                        $options[$option['name']] = $option['name'];
                     }
 
                     $field = FlexiFormUtil::CreateFlexiField('FlexiMailChimpInterestGroupField',
@@ -145,9 +147,10 @@ class FlexiFormMailChimpHandler extends FlexiFormBasicHandler
                             'Options' => $options
                         ));
 
-                    $fields->add($field, array(
-                        'Prompt' => $group['name']
-                    ));
+                    $fields->add($field,
+                        array(
+                            'Prompt' => $group['name']
+                        ));
                 }
             }
         }
@@ -246,11 +249,63 @@ class FlexiFormMailChimpHandler extends FlexiFormBasicHandler
     //////////////////////
     public function onSubmit(Array $data, FlexiForm $form, SS_HTTPRequest $request, DataObject $flexi)
     {
-        if (parent::onSubmit($data, $form, $request, $flexi)) {
+        if ($return = parent::onSubmit($data, $form, $request, $flexi)) {
+
+            $message = 'Skipped MailChimp Syncing';
+
             // @TODO asynchronous api calls
+            $client = new FlexiFormMailChimpClient(
+                $flexi->FlexiFormSetting('MailChimpApiKey')->getValue());
+            $client->setAutoCache(false);
 
+            if ($list_id = $flexi->FlexiFormSetting('MailChimpListID')->getValue()) {
+                if ($email_field = $flexi->getFlexiFormFrontEndFieldByID(
+                    $flexi->FlexiFormSetting('MailChimpEmailField')
+                        ->getValue())) {
+                    if (isset($data[$email_field->SafeName()])) {
 
-            return true;
+                        $params = array(
+                            'id' => $list_id,
+                            'email' => array(
+                                'email' => $data[$email_field->SafeName()]
+                            ),
+                            'merge_vars' => array(
+                                'optin_ip' => Controller::curr()->getRequest()->getIP()
+                            ),
+                            'email_type' => $flexi->FlexiFormSetting('MailChimpEmailType')->getValue(),
+                            'double_optin' => $flexi->FlexiFormSetting('MailChimpDoubleOptIn')->getValue(),
+                            'send_welcome ' => $flexi->FlexiFormSetting('MailChimpSendWelcome')->getValue()
+                        );
+
+                        $groupings = array();
+                        foreach ($flexi->FlexiFormFields()->filter('ClassName',
+                            'FlexiMailChimpInterestGroupField') as $group_field) {
+                            if (isset($data[$group_field->SafeName()])) {
+
+                                $groupings[] = array(
+                                    'id' => $group_field->InterestGroupID,
+                                    'groups' => (array) $data[$group_field->SafeName()]
+                                );
+                            }
+                        }
+
+                        if (! empty($groupings)) {
+                            $params['merge_vars']['groupings'] = $groupings;
+                        }
+
+                        if ($success = $client->subscribe($params)) {
+                            $message = 'Synced ' . $email_field->Name . ' with MailChimp';
+                        } else {
+                            $message = 'Failed Syncing ' . $email_field->Name . ' with MailChimp';
+                        }
+                    }
+                }
+            }
         }
+
+        $this->submission->addStatusMessage($message);
+        $this->submission->write();
+
+        return $return;
     }
 }
