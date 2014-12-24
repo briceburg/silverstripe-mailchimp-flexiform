@@ -1,0 +1,6 @@
+---
+name: flexiform-mailchimp
+---
+
+FlexiMailChimpInterestGroupField:
+  can_create: false
