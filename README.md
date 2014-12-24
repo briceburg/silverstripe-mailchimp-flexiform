@@ -1,4 +1,6 @@
-silverstripe-flexiform-mailchimp
+silverstripe-mailchimp-flexiform
 ================================
 
-Nicely integrates MailChimp with SilverStripe FlexiForms. Includes support for Interest Groups &amp; more.
+Nicely integrate MailChimp lists with SilverStripe FlexiForms. Includes support for Interest Groups & more.
+
+

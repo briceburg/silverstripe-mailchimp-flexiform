@@ -11,8 +11,30 @@ class FlexiMailChimpInterestGroupField extends FlexiFormOptionField
 
     private static $db = array(
         'InterestGroupID' => 'Varchar', // mailchimp interest group id
-        'InterestGroupFormField' => 'Varchar' // field type: checkboxes, radio, select
+        'InterestGroupFormField' => 'Varchar'
     );
 
-    // @TODO set options
+    public function getFormField($title = null, $value = null, $required = false)
+    {
+        switch ($this->InterestGroupFormField) {
+            case 'checkboxes':
+            case 'checkbox':
+                $class = 'CheckboxSetField';
+                break;
+
+            case 'radio':
+            case 'radios':
+                $class = 'OptionsetField';
+                break;
+
+            case 'dropdown':
+            default:
+                $class = 'DropdownField';
+                break;
+        }
+
+        $this->set_stat('field_class',$class);
+
+        return parent::getFormField($title, $value, $required);
+    }
 }
