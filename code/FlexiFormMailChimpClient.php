@@ -15,7 +15,7 @@ class FlexiFormMailChimpClient
 
     protected $client = null;
 
-    protected $debug_exceptions = false;
+    protected $debug_exceptions = true;
 
     public function __construct($api_key)
     {

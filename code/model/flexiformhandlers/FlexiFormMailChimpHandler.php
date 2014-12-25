@@ -269,9 +269,6 @@ class FlexiFormMailChimpHandler extends FlexiFormBasicHandler
                             'email' => array(
                                 'email' => $data[$email_field->SafeName()]
                             ),
-                            'merge_vars' => array(
-                                'optin_ip' => Controller::curr()->getRequest()->getIP()
-                            ),
                             'email_type' => $flexi->FlexiFormSetting('MailChimpEmailType')->getValue(),
                             'double_optin' => $flexi->FlexiFormSetting('MailChimpDoubleOptIn')->getValue(),
                             'send_welcome ' => $flexi->FlexiFormSetting('MailChimpSendWelcome')->getValue()
@@ -289,8 +286,17 @@ class FlexiFormMailChimpHandler extends FlexiFormBasicHandler
                             }
                         }
 
+                        $merge_vars = array();
                         if (! empty($groupings)) {
-                            $params['merge_vars']['groupings'] = $groupings;
+                            $merge_vars['groupings'] = $groupings;
+                        }
+
+                        if (! $params['double_optin']) {
+                            $merge_vars['optin_ip'] = Controller::curr()->getRequest()->getIP();
+                        }
+
+                        if (! empty($merge_vars)) {
+                            $params['merge_vars'] = $merge_vars;
                         }
 
                         if ($success = $client->subscribe($params)) {
