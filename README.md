@@ -16,9 +16,9 @@ Tested in SilverStripe 3.1
 Screenshots
 -----------
 
-![flexiform fields](https://github.com/briceburg/silverstripe-flexiform/blob/master/docs/screenshots/flexiform_1.png?raw=true)
+![flexiform fields](docs/screenshots/mailchimp_flexiform_1.png?raw=true)
 
-![field editing](https://github.com/briceburg/silverstripe-flexiform/blob/master/docs/screenshots/flexiform_2.png?raw=true)
+![field editing](docs/screenshots/mailchimp_flexiform_2.png?raw=true)
 
 Installation
 ------------
@@ -32,7 +32,7 @@ Usage
 
 This module integrates your SilverStripe flexiforms with MailChimp through the MailChimp v2 API. 
 
-You associate a form with a MailChimp list. When a valid submission is made, the 
+You associate a form with a MailChimp List. When a valid submission is made, the 
 submitter is subscribed to the associated list and _optionally_ 
 added to selected Interest Groups. 
 
