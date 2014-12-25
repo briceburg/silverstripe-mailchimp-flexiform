@@ -1,5 +1,5 @@
 {
-	"name": "briceburg/silverstripe-flexiform-mailchimp",
+	"name": "briceburg/silverstripe-mailchimp-flexiform",
 	"description": "Nicely integrate MailChimp lists with SilverStripe FlexiForms. Includes support for Interest Groups & more.",
 	"type": "silverstripe-module",
 	"homepage": "https://github.com/briceburg/silverstripe-mailchimp-flexiform",
