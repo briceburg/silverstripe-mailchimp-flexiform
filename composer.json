@@ -1,0 +1,28 @@
+{
+	"name": "briceburg/silverstripe-flexiform-mailchimp",
+	"description": "Nicely integrate MailChimp lists with SilverStripe FlexiForms. Includes support for Interest Groups & more.",
+	"type": "silverstripe-module",
+	"homepage": "https://github.com/briceburg/silverstripe-mailchimp-flexiform",
+	"keywords": ["silverstripe", "mailchimp", "userforms", "flexi", "flexiform"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Brice Burgess",
+			"email": "briceburg@gmail.com"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/briceburg/silverstripe-mailchimp-flexiform/issues"
+	},
+	"require": {
+    "briceburg/silverstripe-flexiform": "*",
+    "zfr/zfr-mailchimp": "2.*"
+  },
+	"extra": {
+		"installer-name": "mailchimp-flexiform",
+		"screenshots": [
+			"docs/screenshots/mailchimp_flexiform_1.png",
+			"docs/screenshots/mailchimp_flexiform_2.png"
+		]
+	}
+}
