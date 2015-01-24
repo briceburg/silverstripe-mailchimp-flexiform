@@ -1,6 +1,6 @@
 <?php
 
-class FlexiFormMailChimpHandler extends FlexiFormBasicHandler
+class FlexiFormMailChimpHandler extends FlexiFormEmailHandler
 {
 
     private static $handler_label = 'Mailchimp Handler';
